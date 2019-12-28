@@ -1,0 +1,121 @@
+<%#
+ Copyright 2013-2019 the original author or authors from the JHipster project.
+
+ This file is part of the JHipster project, see https://www.jhipster.tech/
+ for more information.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-%>
+<%#
+TODO: MUI
+-%>
+import React from 'react';
+import { Translate, translate } from 'react-jhipster';
+import { SnackbarContent, Button, Grid, Dialog, MuiDialogTitle, MuiDialogContent, MuiDialogActions, TextField, FormGroup } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+
+export interface ILoginModalProps {
+  showModal: boolean;
+  loginError: boolean;
+  handleLogin: Function;
+  handleClose: Function;
+}
+
+class LoginModal extends React.Component<ILoginModalProps> {
+  handleSubmit = (event, errors, { username, password, rememberMe }) => {
+    const { handleLogin } = this.props;
+    handleLogin(username, password, rememberMe);
+  }
+
+  render() {
+    const { loginError, handleClose } = this.props;
+
+    return (
+    <Dialog open={this.props.showModal} onClose={handleClose} id="login-page" autoFocus={false}>
+      <form onSubmit={this.handleSubmit}>
+        <MuiDialogTitle id="login-title"><Translate contentKey="login.title">Sign in</Translate></MuiDialogTitle>
+        <MuiDialogContent>
+          <Grid container>
+            <Grid item md="12">
+            { loginError ?
+              <SnackbarContent variant="error">
+              <Translate contentKey="login.messages.error.authentication">
+                <strong>Failed to sign in!</strong> Please check your credentials and try again.
+              </Translate>
+            </SnackbarContent>
+            : null
+            }
+            </Grid>
+            <Grid item md="12">
+            <TextField
+                    name="username"
+                    label={translate('global.form.username.label')}
+                    placeholder={translate('global.form.username.placeholder')}
+                    required
+                    error
+                    helperText="Username cannot be empty!"
+                    autoFocus
+            />
+            <TextField
+                    name="password" type="password"
+                    label={translate('login.form.password')}
+                    placeholder={translate('login.form.password.placeholder')}
+                    required
+                    error
+                    helperText="Password cannot be empty!"
+            />
+            <FormControl check inline<% if (authenticationType === 'session' && databaseType === 'no') { %> hidden<% } %>>
+              <FormGroup>
+                <FormControlLabel
+                        className="form-check-label"
+                        control={<Checkbox name="rememeberMe"  />}
+                        label={ <Translate contentKey="login.form.rememberme">Remember me</Translate> }
+                >
+                </FormControlLabel>
+
+              </FormGroup>
+            </FormControl>
+            </Grid>
+          </Grid>
+          <div className="mt-1">&nbsp;</div>
+          <%_ if (!skipUserManagement) { _%>
+          <SnackbarContent variant="warning">
+            <Link to="/account/reset/request">
+            <Translate contentKey="login.password.forgot">Did you forget your password?</Translate>
+            </Link>
+          </SnackbarContent>
+          <SnackbarContent variant="warning">
+              <span>
+                <Translate contentKey="global.messages.info.register.noaccount">You don&apos;t have an account yet?</Translate>
+              </span>
+            {' '}
+            <Link to="/account/register">
+            <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
+            </Link>
+          </SnackbarContent>
+          <%_ } _%>
+        </MuiDialogContent>
+        <MuiDialogActions>
+          <Button color="secondary" onClick={handleClose} tabIndex="1">
+            <Translate contentKey="entity.action.cancel">Cancel</Translate>
+          </Button>
+          {' '}
+          <Button color="primary" type="submit"><Translate contentKey="login.form.button">Sign in</Translate></Button>
+        </MuiDialogActions>
+      </form>
+    </Dialog>
+  );
+  }
+  }
+
+  export default LoginModal;

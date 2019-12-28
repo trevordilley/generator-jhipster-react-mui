@@ -1,0 +1,27 @@
+
+<%#
+TODO: Make alert-esque paper?
+-%>
+
+import React from 'react';
+import { Translate } from 'react-jhipster';
+
+import { SnackbarContent} from '@material-ui/core'
+
+
+
+class PageNotFound extends React.Component {
+  render() {
+    return (
+      <div>
+        <SnackbarContent variant="error">
+          <Translate contentKey="error.http.404">
+            The page does not exist.
+          </Translate>
+        </SnackbarContent>
+      </div>
+    );
+  }
+}
+
+export default PageNotFound;

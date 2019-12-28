@@ -1,0 +1,10 @@
+{
+  "generator-jhipster-blueprint": {
+    "promptValues": {
+      "githubName": "trevordilley",
+      "authorName": "Trevor Dilley",
+      "authorEmail": "trevor.lee.dilley@gmail.com",
+      "authorUrl": ""
+    }
+  }
+}
