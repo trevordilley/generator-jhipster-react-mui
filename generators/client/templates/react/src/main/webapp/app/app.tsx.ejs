@@ -16,22 +16,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -%>
-import 'react-toastify/dist/ReactToastify.css';
 import './app.<%= styleSheetExt %>';
 
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-<%_ if (clientTheme !== 'mui') { _%>
-import { Card } from 'reactstrap';
-<%_ } _%>
-<%_ if (clientTheme === 'mui') { _%>
-import { Card } from '@material-ui/core';
-<%_ } _%>
-<%#
-TODO: Use Snackbar for Material UI
--%>
-import { ToastContainer, toast } from 'react-toastify';
+import { Paper, Snackbar } from '@material-ui/core';
 
 import { BrowserRouter as Router } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
@@ -63,7 +53,10 @@ export const App = (props: IAppProps) => {
   return (
     <Router basename={baseHref}>
       <div className="app-container" style={{ paddingTop }}>
-        <ToastContainer position={toast.POSITION.TOP_LEFT} className="toastify-container" toastClassName="toastify-toast"/>
+        <%#
+        TODO use MUI snackbars for toasts.
+        -%>
+        <Snackbar />
         <ErrorBoundary>
           <Header
             isAuthenticated={props.isAuthenticated}
@@ -78,21 +71,11 @@ export const App = (props: IAppProps) => {
           />
         </ErrorBoundary>
         <div className="container-fluid view-container" id="app-view-container">
-
-          <%_ if (clientTheme === "mui") { _%>
-          <Paper className="jh-card">
-          <%_ } else { _%>
-          <Card className="jh-card">
-          <%_ }  _%>
+          <Paper>
             <ErrorBoundary>
               <AppRoutes/>
             </ErrorBoundary>
-
-            <%_ if (clientTheme === "mui") { _%>
-              </Paper>
-          <%_ } else { _%>
-            </Card>
-          <%_ }  _%>
+          </Paper>
           <Footer/>
         </div>
       </div>

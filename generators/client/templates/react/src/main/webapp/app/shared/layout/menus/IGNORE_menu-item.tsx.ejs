@@ -21,13 +21,15 @@
 TODO: MUI
 -%>
 import React from 'react';
-import { DropdownItem } from 'reactstrap';
+import { MenuItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { NavLink as Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 export interface IMenuItem {
-  icon: IconProp;
+<%#
+TODO: Specific type for MUI Icon
+-%>
+
+  icon: JSX.Element;
   to: string;
   id?: string
 }
@@ -38,9 +40,10 @@ export default class MenuItem extends React.Component<IMenuItem> {
     const { to, icon, id, children } = this.props;
 
     return (
-      <DropdownItem tag={Link} to={to} id={id}>
-        <FontAwesomeIcon icon={icon} fixedWidth /> {children}
-      </DropdownItem>
+      <MenuItem anchorEl={Link} to={to} id={id}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText>{children}</ListItemText>
+      </MenuItem>
     );
   }
 }

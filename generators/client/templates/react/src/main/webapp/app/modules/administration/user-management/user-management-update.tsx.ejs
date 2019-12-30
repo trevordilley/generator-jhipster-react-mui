@@ -22,10 +22,9 @@ TODO: MUI
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Label, Row, Col } from 'reactstrap';
-import { AvForm, AvGroup, AvInput, AvField, AvFeedback } from 'availity-reactstrap-validation';
+import { Button, Grid, Label, TextField, FormGroup, Typography } from '@material-ui/core'
 import { Translate, translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fontawesome/react-fontawesome';
 
 <%_ if (enableTranslation) { _%>
 import { locales, languages } from 'app/config/translation';
@@ -66,147 +65,84 @@ export const UserManagementUpdate = (props: IUserManagementUpdateProps) => {
 
   return (
     <div>
-      <Row className="justify-content-center">
-        <Col md="8">
-          <h1>
+      <Grid container className="justify-content-center">
+        <Grid item md={8}>
+          <Typography variant="h1">
             <Translate contentKey="userManagement.home.createOrEditLabel">Create or edit a User</Translate>
-          </h1>
+          </Typography>
         </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col md="8">
+      </Grid>
+      <Grid container className="justify-content-center">
+        <Grid item md={8}>
         { loading ? <p>Loading...</p>
-        : <AvForm onValidSubmit={saveUser}>
+        : <form onSubmit={saveUser}>
           {user.id ? (
-            <AvGroup>
-              <Label for="id">
-                <Translate contentKey="global.field.id">ID</Translate>
-              </Label>
-              <AvField type="text" className="form-control" name="id" required readOnly value={user.id} />
-            </AvGroup>
+              <TextField
+                      className="form-control"
+                      name="id"
+                      required
+                      disabled
+                      value={user.id}
+                      label={ translate ("global.field.id") }
+              />
           ) : null}
-          <AvGroup>
             <Label for="login">
-              <Translate contentKey="userManagement.login">Login</Translate>
             </Label>
-            <AvField
-              type="text"
+            <TextField
               className="form-control"
               name="login"
-              validate={{
-                required: {
-                  value: true,
-                  errorMessage: translate('register.messages.validate.login.required')
-                },
-                pattern: {
-                  value: '^[_.@A-Za-z0-9-]*$',
-                  errorMessage: translate('register.messages.validate.login.pattern')
-                },
-                minLength: {
-                  value: 1,
-                  errorMessage: translate('register.messages.validate.login.minlength')
-                },
-                maxLength: {
-                  value: 50,
-                  errorMessage: translate('register.messages.validate.login.maxlength')
-                }
-              }}
+              required
               value={user.login}
+              label={ translate("userManagement.login") }
             />
-          </AvGroup>
-          <AvGroup>
-            <Label for="firstName">
-              <Translate contentKey="userManagement.firstName">First Name</Translate>
-            </Label>
-            <AvField
-              type="text"
+            <TextField
               className="form-control"
               name="firstName"
-              validate={{
-                maxLength: {
-                  value: 50,
-                  errorMessage: translate('entity.validation.maxlength', { max: 50 })
-                }
-              }}
               value={user.firstName}
+              label={translate("userManagement.firstName")}
               />
-          </AvGroup>
-          <AvGroup>
-            <Label for="lastName">
-              <Translate contentKey="userManagement.lastName">Last Name</Translate>
-            </Label>
-            <AvField
-              type="text"
+            <TextField
               className="form-control"
               name="lastName"
-              validate={{
-                maxLength: {
-                  value: 50,
-                  errorMessage: translate('entity.validation.maxlength', { max: 50 })
-                }
-              }}
               value={user.lastName}
+              label={translate("userManagement.lastName")}
             />
-            <AvFeedback>This field cannot be longer than 50 characters.</AvFeedback>
-          </AvGroup>
-          <AvGroup>
-            <AvField
+            <TextField
               name="email"
               label={translate('global.form.email.label')}
               placeholder={translate('global.form.email.placeholder')}
-              type="email"
-              validate={{
-                required: {
-                  value: true,
-                  errorMessage: translate('global.messages.validate.email.required')
-                },
-                email: {
-                  errorMessage: translate('global.messages.validate.email.invalid')
-                },
-                minLength: {
-                  value: 5,
-                  errorMessage: translate('global.messages.validate.email.minlength')
-                },
-                maxLength: {
-                  value: 254,
-                  errorMessage: translate('global.messages.validate.email.maxlength')
-                }
-            }}
+              required
             value={user.email}
           />
-          </AvGroup>
-          <AvGroup check>
-            <Label>
-              <AvInput type="checkbox" name="activated" value={user.activated} /> <Translate contentKey="userManagement.activated">Activated</Translate>
-            </Label>
-          </AvGroup>
+            <FormControlLabel control={<Checkbox checked={user.activated} name="activated"/>} label={
+            <Translate contentKey="userManagement.activated">Activated</Translate>
+            } />
   <%_ if (enableTranslation) { _%>
-          <AvGroup>
-            <Label for="langKey">
-              <Translate contentKey="userManagement.langKey">Language Key</Translate>
-            </Label>
-            <AvField type="select" className="form-control" name="langKey" value={user.langKey}>
+            <TextField
+              select
+              label={translate( "userManagement.langKey" )}
+            >
               {locales.map(locale =>
-                <option value={locale} key={locale}>
-                  {languages[locale].name}
-                </option>
+              <option value={locale} key={locale}>
+                {languages[locale].name}
+              </option>
               )}
-            </AvField>
-          </AvGroup>
+            </TextField>
   <%_ } _%>
-          <AvGroup>
-            <Label for="authorities">
-              <Translate contentKey="userManagement.profiles">Language Key</Translate>
-            </Label>
-            <AvInput type="select" className="form-control" name="authorities" value={user.authorities} multiple>
-              {roles.map(role => (
-                <option value={role} key={role}>
-                  {role}
-                </option>
-              ))}
-            </AvInput>
-          </AvGroup>
-          <Button tag={Link} to="/admin/user-management" replace color="info">
+            <TextField
+              select
+              name="authorities"
+              value={user.authorities}
+
+              label={translate( "userManagement.profiles" )}
+            >
+            {roles.map(role => (
+            <option value={role} key={role}>
+              {role}
+            </option>
+            ))}
+            </TextField>
+          <Button component={Link} to="/admin/user-management"  color="secondary">
             <FontAwesomeIcon icon="arrow-left" />&nbsp;
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
@@ -217,10 +153,10 @@ export const UserManagementUpdate = (props: IUserManagementUpdateProps) => {
             <FontAwesomeIcon icon="save" />&nbsp;
             <Translate contentKey="entity.action.save">Save</Translate>
           </Button>
-        </AvForm>
+        </form>
         }
-        </Col>
-      </Row>
+        </Grid>
+      </Grid>
     </div>
   );
 };

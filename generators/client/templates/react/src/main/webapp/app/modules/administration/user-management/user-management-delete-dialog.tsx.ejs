@@ -22,9 +22,9 @@ TODO: MUI
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import { Dialog, DialogTitle,DialogContent, DialogActions, Button } from '@material-ui/core'
 import { Translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fontawesome/react-fontawesome';
 
 import { getUser, deleteUser } from './user-management.reducer';
 import { IRootState } from 'app/shared/reducers';
@@ -50,22 +50,22 @@ export const UserManagementDeleteDialog = (props: IUserManagementDeleteDialogPro
   const { user } = props;
 
   return (
-    <Modal isOpen toggle={handleClose}>
-      <ModalHeader toggle={handleClose}><Translate contentKey="entity.delete.title">Confirm delete operation</Translate></ModalHeader>
-      <ModalBody>
+    <Dialog open={true} onClose={handleClose}>
+      <DialogTitle><Translate contentKey="entity.delete.title">Confirm delete operation</Translate></DialogTitle>
+      <DialogContent>
         <Translate contentKey="userManagement.delete.question" interpolate={{ login: user.login }}>Are you sure you want to delete this User?</Translate>
-      </ModalBody>
-      <ModalFooter>
+      </DialogContent>
+      <DialogActions>
         <Button color="secondary" onClick={handleClose}>
           <FontAwesomeIcon icon="ban"/>&nbsp;
           <Translate contentKey="entity.action.cancel">Cancel</Translate>
         </Button>
-        <Button color="danger" onClick={confirmDelete}>
+        <Button color="primary" onClick={confirmDelete}>
           <FontAwesomeIcon icon="trash" />&nbsp;
           <Translate contentKey="entity.action.delete">Delete</Translate>
         </Button>
-      </ModalFooter>
-    </Modal>
+      </DialogActions>
+    </Dialog>
   );
 };
 
