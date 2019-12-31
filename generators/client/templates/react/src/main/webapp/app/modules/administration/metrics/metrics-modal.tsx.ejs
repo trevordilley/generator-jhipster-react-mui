@@ -20,8 +20,8 @@
 TODO: MUI
 -%>
 import React from 'react';
-import { Table, Modal, ModalHeader, ModalBody, ModalFooter, Button, Input, Badge, Row } from 'reactstrap';
 
+import { Button, Grid, Dialog, DialogTitle, DialogContent, DialogActions, TextField, FormGroup, Chip, TableContainer, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import ThreadItem from './thread-item';
 
 export interface IMetricsModalProps {
@@ -84,7 +84,7 @@ export class MetricsModal extends React.Component<IMetricsModalProps, IMetricsMo
     return { threadDumpAll, threadDumpRunnable, threadDumpWaiting, threadDumpTimedWaiting, threadDumpBlocked };
   };
 
-  getBadgeClass = threadState => {
+  getChipClass = threadState => {
     if (threadState === 'RUNNABLE') {
       return 'badge-success';
     } else if (threadState === 'WAITING') {
@@ -96,7 +96,7 @@ export class MetricsModal extends React.Component<IMetricsModalProps, IMetricsMo
     }
   };
 
-  updateBadgeFilter = badge => () => this.setState({ badgeFilter: badge });
+  updateChipFilter = badge => () => this.setState({ badgeFilter: badge });
 
   updateSearchFilter = event => this.setState({ searchFilter: event.target.value });
 
@@ -109,25 +109,25 @@ export class MetricsModal extends React.Component<IMetricsModalProps, IMetricsMo
       filteredList = this.computeFilteredList();
     }
 
-    return <Modal
-      isOpen={showModal} toggle={handleClose} className="modal-lg">
-      <ModalHeader toggle={handleClose}>Threads dump</ModalHeader>
-      <ModalBody>
-        <Badge color="primary" className="hand" onClick={this.updateBadgeFilter('')}>All&nbsp;
-          <Badge pill>{counters.threadDumpAll || 0}</Badge>
-        </Badge>&nbsp;
-        <Badge color="success" className="hand" onClick={this.updateBadgeFilter('RUNNABLE')}>Runnable&nbsp;
-          <Badge pill>{counters.threadDumpRunnable || 0}</Badge>
-        </Badge>&nbsp;
-        <Badge color="info" className="hand" onClick={this.updateBadgeFilter('WAITING')}>Waiting&nbsp;
-          <Badge pill>{counters.threadDumpWaiting || 0}</Badge>
-        </Badge>&nbsp;
-        <Badge color="warning" className="hand" onClick={this.updateBadgeFilter('TIMED_WAITING')}>Timed Waiting&nbsp;
-          <Badge pill>{counters.threadDumpTimedWaiting || 0}</Badge>
-        </Badge>&nbsp;
-        <Badge color="danger" className="hand" onClick={this.updateBadgeFilter('BLOCKED')}>Blocked&nbsp;
-          <Badge pill>{counters.threadDumpBlocked || 0}</Badge>
-        </Badge>&nbsp;
+    return <Dialog
+      open={showModal} onClose={handleClose} className="modal-lg">
+      <DialogTitle>Threads dump</DialogTitle>
+      <DialogContent>
+        <Chip color="primary" className="hand" onClick={this.updateChipFilter('')}>All&nbsp;
+          <Chip pill>{counters.threadDumpAll || 0}</Chip>
+        </Chip>&nbsp;
+        <Chip color="success" className="hand" onClick={this.updateChipFilter('RUNNABLE')}>Runnable&nbsp;
+          <Chip pill>{counters.threadDumpRunnable || 0}</Chip>
+        </Chip>&nbsp;
+        <Chip color="info" className="hand" onClick={this.updateChipFilter('WAITING')}>Waiting&nbsp;
+          <Chip pill>{counters.threadDumpWaiting || 0}</Chip>
+        </Chip>&nbsp;
+        <Chip color="warning" className="hand" onClick={this.updateChipFilter('TIMED_WAITING')}>Timed Waiting&nbsp;
+          <Chip pill>{counters.threadDumpTimedWaiting || 0}</Chip>
+        </Chip>&nbsp;
+        <Chip color="danger" className="hand" onClick={this.updateChipFilter('BLOCKED')}>Blocked&nbsp;
+          <Chip pill>{counters.threadDumpBlocked || 0}</Chip>
+        </Chip>&nbsp;
         <div className="mt-2">&nbsp;</div>
         <Input type="text" className="form-control" placeholder="Filter by Lock Name..."
                onChange={this.updateSearchFilter}/>
@@ -135,42 +135,47 @@ export class MetricsModal extends React.Component<IMetricsModalProps, IMetricsMo
           {filteredList ? filteredList.map((threadDumpInfo, i) =>
             (
               <div key={`dump-${i}`}>
-                <h6> <span className={'badge ' + this.getBadgeClass(threadDumpInfo.threadState)}>{threadDumpInfo.threadState}</span>&nbsp;
+                <Typography variant="h6"> <span className={'badge ' + this.getChipClass(threadDumpInfo.threadState)}>{threadDumpInfo.threadState}</span>&nbsp;
                   {threadDumpInfo.threadName} (ID {threadDumpInfo.threadId})&nbsp;
-                </h6>
-                <ThreadItem threadDumpInfo={threadDumpInfo}/>
-                <Row>
-                  <Table responsive>
-                    <thead>
-                    <tr>
-                      <th>Blocked Time</th>
-                      <th>Blocked Count</th>
-                      <th>Waited Time</th>
-                      <th>Waited Count</th>
-                      <th>Lock Name</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr key={threadDumpInfo.lockName}>
-                      <td>{threadDumpInfo.blockedTime}</td>
-                      <td>{threadDumpInfo.blockedCount}</td>
-                      <td>{threadDumpInfo.waitedTime}</td>
-                      <td>{threadDumpInfo.waitedCount}</td>
-                      <td className="thread-dump-modal-lock" title={threadDumpInfo.lockName}>
-                        <code>{threadDumpInfo.lockName}</code></td>
-                    </tr>
-                    </tbody>
-                  </Table>
-                </Row>
+                </Typography>
+                <ThreadItem threadDumpInfo={threadDumpInfo} />
+                  <Grid container>
+                    <Grid item xs={12}>
+                      <TableContainer>
+                        <Table>
+                          <TableHead>
+                          <TableRow>
+                            <TableCell>Blocked Time</TableCell>
+                            <TableCell>Blocked Count</TableCell>
+                            <TableCell>Waited Time</TableCell>
+                            <TableCell>Waited Count</TableCell>
+                            <TableCell>Lock Name</TableCell>
+                          </TableRow>
+                          </TableHead>
+                          <TableBody>
+                          <TableRow key={threadDumpInfo.lockName}>
+                            <TableCell>{threadDumpInfo.blockedTime}</TableCell>
+                            <TableCell>{threadDumpInfo.blockedCount}</TableCell>
+                            <TableCell>{threadDumpInfo.waitedTime}</TableCell>
+                            <TableCell>{threadDumpInfo.waitedCount}</TableCell>
+                            <TableCell className="thread-dump-modal-lock" title={threadDumpInfo.lockName}>
+                              <code>{threadDumpInfo.lockName}</code></TableCell>
+                          </TableRow>
+                          </TableBody>
+
+                        </Table>
+                      </TableContainer>
+                    </Grid>
+                  </Grid>
               </div>
             )
           ) : null}
         </div>
-      </ModalBody>
-      <ModalFooter>
+      </DialogContent>
+      <DialogActions>
         <Button color="primary" onClick={handleClose}>Close</Button>
-      </ModalFooter>
-    </Modal>;
+      </DialogActions>
+    </Dialog>;
   }
 }
 

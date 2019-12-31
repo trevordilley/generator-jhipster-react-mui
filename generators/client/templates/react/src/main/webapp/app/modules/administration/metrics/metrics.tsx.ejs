@@ -21,7 +21,7 @@ TODO: MUI
 -%>
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Button, Col, Progress, Row, Table } from 'reactstrap';
+import { Typography, Button, Grid } from '@material-ui/core'
 import {
   CacheMetrics,
   DatasourceMetrics,
@@ -60,9 +60,9 @@ export const MetricsPage = (props: IMetricsPageProps) => {
 
   return (
     <div>
-      <h2 id="metrics-page-heading">Application Metrics</h2>
+      <Typography variant="h2" id="metrics-page-heading">Application Metrics</Typography>
       <p>
-        <Button onClick={getMetrics} color={isFetching ? 'btn btn-danger' : 'btn btn-primary'} disabled={isFetching}>
+        <Button onClick={getMetrics} color={"primary"} disabled={isFetching}>
           <FontAwesomeIcon icon="sync" />
           &nbsp;
           <Translate component="span" contentKey="health.refresh.button">
@@ -72,15 +72,17 @@ export const MetricsPage = (props: IMetricsPageProps) => {
       </p>
       <hr />
 
-      <Row>
-        <Col sm="12">
-          <h3>JVM Metrics</h3>
-          <Row>
-            <Col md="4">
+      <Grid container>
+        <Grid item sm={12}>
+          <Typography variant="h3">JVM Metrics</Typography>
+          <Grid container>
+            <Grid item md={4}>
               {metrics && metrics.jvm ? <JvmMemory jvmMetrics={metrics.jvm} wholeNumberFormat={APP_WHOLE_NUMBER_FORMAT} /> : ''}
-            </Col>
-            <Col md="4">{threadDump ? <JvmThreads jvmThreads={threadDump} wholeNumberFormat={APP_WHOLE_NUMBER_FORMAT} /> : ''}</Col>
-            <Col md="4">
+            </Grid>
+            <Grid item md={4}>
+              {threadDump ? <JvmThreads jvmThreads={threadDump} wholeNumberFormat={APP_WHOLE_NUMBER_FORMAT} /> : ''}
+            </Grid>
+            <Grid item md={4}>
               {metrics && metrics.processMetrics ? (
                 <SystemMetrics
                   systemMetrics={metrics.processMetrics}
@@ -90,10 +92,10 @@ export const MetricsPage = (props: IMetricsPageProps) => {
               ) : (
                 ''
               )}
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
 
       {metrics && metrics.garbageCollector ? (
         <GarbageCollectorMetrics garbageCollectorMetrics={metrics.garbageCollector} wholeNumberFormat={APP_WHOLE_NUMBER_FORMAT} />
@@ -116,24 +118,24 @@ export const MetricsPage = (props: IMetricsPageProps) => {
       )}
 
       {metrics.cache ? (
-        <Row>
-          <Col sm="12">
+        <Grid container>
+          <Grid item sm={12}>
             <CacheMetrics cacheMetrics={metrics.cache} twoDigitAfterPointFormat={APP_TWO_DIGITS_AFTER_POINT_NUMBER_FORMAT} />
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
       ) : (
         ''
       )}
 
       {metrics.databases && JSON.stringify(metrics.databases) !== '{}' ? (
-        <Row>
-          <Col sm="12">
+        <Grid container>
+          <Grid item sm={12}>
             <DatasourceMetrics
               datasourceMetrics={metrics.databases}
               twoDigitAfterPointFormat={APP_TWO_DIGITS_AFTER_POINT_NUMBER_FORMAT}
             />
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
       ) : (
         ''
       )}

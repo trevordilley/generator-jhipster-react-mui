@@ -21,7 +21,7 @@ TODO: MUI
 -%>
 import React from 'react';
 import { Collapse, Card, CardBody, Row } from 'reactstrap';
-
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Grid, Card, CardContent } from '@material-ui/core'
 export interface IThreadItemProps {
   threadDumpInfo: any;
 }
@@ -48,21 +48,26 @@ export class ThreadItem extends React.Component<IThreadItemProps, IThreadItemSta
       <a onClick={this.toggleStackTrace} style={{ color: 'hotpink' }}>
         {this.state.collapse ? <span>Hide StackTrace</span> : <span>Show StackTrace</span>}
       </a>
-      <Collapse isOpen={this.state.collapse}>
-        <Card>
-          <CardBody>
-            <Row className="break" style={{ overflowX: 'scroll' }}>
-              {Object.entries(threadDumpInfo.stackTrace).map(([stK, stV]: [string, any]) => (
-                <samp key={`detail-${stK}`}>
-                  {stV.className}.{stV.methodName}
-                  <code>({stV.fileName}:{stV.lineNumber})</code>
-                </samp>
-              ))}
-              <span className="mt-1"/>
-              </Row>
-          </CardBody>
-        </Card>
-      </Collapse>
+      <ExpansionPanel expanded={this.state.collapse}>
+        <ExpansionPanelDetails>
+          <Card>
+            <CardContent>
+              <Grid container>
+                <Grid item xs={12} style={{ overflowX: 'scroll' }} >
+                  {Object.entries(threadDumpInfo.stackTrace).map(([stK, stV]: [string, any]) => (
+                  <samp key={`detail-${stK}`}>
+                    {stV.className}.{stV.methodName}
+                    <code>({stV.fileName}:{stV.lineNumber})</code>
+                  </samp>
+                  ))}
+                  <span className="mt-1"/>
+
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
     </div>;
   }
 }

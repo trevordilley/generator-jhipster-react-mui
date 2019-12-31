@@ -20,7 +20,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Badge, Table, Button } from 'reactstrap';
+import { Typography, Button, Grid,  Chip, TableContainer, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 
 import { gatewayRoutes } from '../administration.reducer';
 
@@ -37,10 +37,10 @@ export class GatewayPage extends React.Component<IGatewayPageProps> {
     Object.keys(instance).map((key, index) => {
       spans.push((
         <span key={key.toString() + 'value'}>
-          <Badge key={key.toString() + '-containerbadge'} className="font-weight-normal">
-            <Badge key={key.toString() + '-badge'} color="info" className="font-weight-normal" pill>{key}</Badge>
+          <Chip key={key.toString() + '-containerbadge'} className="font-weight-normal">
+            <Chip key={key.toString() + '-badge'} color="info" className="font-weight-normal" pill>{key}</Chip>
             {instance[key]}
-          </Badge>
+          </Chip>
         </span>
       ));
     });
@@ -50,34 +50,36 @@ export class GatewayPage extends React.Component<IGatewayPageProps> {
   badgeInfo = info => {
     if (info) {
       if (info.status === 'UP') {
-        return <Badge color="success">{info.status}</Badge>;
+        return <Chip color="success">{info.status}</Chip>;
       } else {
-        return <Badge color="danger">{info.status}</Badge>;
+        return <Chip color="danger">{info.status}</Chip>;
       }
     } else {
-      return <Badge color="warning">?</Badge>;
+      return <Chip color="warning">?</Chip>;
     }
   }
 
   instanceInfo = route => {
     if (route) {
       return (
-        <Table striped responsive>
-          <tbody>
-            {route.serviceInstances.map((instance, i) =>
-              <tr key={instance.instanceInfo + '-info'}>
-                <td><a href={instance.uri} target="_blank" rel="noopener noreferrer">{instance.uri}</a></td>
-                <td>{this.badgeInfo(instance.instanceInfo)}</td>
-                <td>{this.metadata(instance.metadata)}</td>
-              </tr>
-            )}
-          </tbody>
-        </Table>);
-    }
+  <TableContainer>
+    <TableRow striped responsive>
+      <TableBody>
+      {route.serviceInstances.map((instance, i) =>
+      <TableRow key={instance.instanceInfo + '-info'}>
+        <TableCell><a href={instance.uri} target="_blank" rel="noopener noreferrer">{instance.uri}</a></TableCell>
+        <TableCell>{this.badgeInfo(instance.instanceInfo)}</TableCell>
+        <TableCell>{this.metadata(instance.metadata)}</TableCell>
+      </TableRow>
+      )}
+      </TableBody>
+    </Table>);
+  </TableContainer>
+  }
   }
 
   gatewayRoutes = () => {
-    if (!this.props.isFetching) {
+  if (!this.props.isFetching) {
       this.props.gatewayRoutes();
     }
   }
@@ -86,32 +88,35 @@ export class GatewayPage extends React.Component<IGatewayPageProps> {
     const { routes, isFetching } = this.props;
     return (
       <div>
-        <h2>Gateway</h2>
+        <Typography variant="h2">Gateway</Typography>
           <p>
-            <Button onClick={this.gatewayRoutes} color={isFetching ? 'danger' : 'primary'} disabled={isFetching}>
+            <Button onClick={this.gatewayRoutes} color={'primary'} disabled={isFetching}>
               <FontAwesomeIcon icon="sync" />&nbsp;
               <Translate component="span" contentKey="health.refresh.button">Refresh</Translate>
             </Button>
           </p>
 
+        <TableContainer>
           <Table striped responsive>
-            <thead>
-              <tr key="header">
-                <th><Translate contentKey="gateway.routes.url">URL</Translate></th>
-                <th><Translate contentKey="gateway.routes.service">Service</Translate></th>
-                <th><Translate contentKey="gateway.routes.servers">Available servers</Translate></th>
-              </tr>
-            </thead>
-            <tbody>
+            <TableHead>
+            <TableRow key="header">
+              <TableCell><Translate contentKey="gateway.routes.url">URL</Translate></TableCell>
+              <TableCell><Translate contentKey="gateway.routes.service">Service</Translate></TableCell>
+              <TableCell><Translate contentKey="gateway.routes.servers">Available servers</Translate></TableCell>
+            </TableRow>
+            </TableHead>
+            <TableBody>
             {routes.map((route, i) =>
-              <tr key={`routes-${i}`}>
-                <td>{route.path}</td>
-                <td>{route.serviceId}</td>
-                <td>{this.instanceInfo(route)}</td>
-              </tr>
+            <TableRow key={`routes-${i}`}>
+              <TableCell>{route.path}</TableCell>
+              <TableCell>{route.serviceId}</TableCell>
+              <TableCell>{this.instanceInfo(route)}</TableCell>
+            </TableRow>
             )}
-            </tbody>
+            </TableBody>
           </Table>
+
+        </TableContainer>
 
         </div>
     );
