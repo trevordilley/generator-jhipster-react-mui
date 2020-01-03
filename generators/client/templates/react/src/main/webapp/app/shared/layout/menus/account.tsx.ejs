@@ -31,36 +31,40 @@ import { Translate, translate } from 'react-jhipster';
 import { getLoginUrl } from 'app/shared/util/url-utils';
 <%_ } _%>
 import { NavDropdown } from './menu-components';
-
-
+import BuildIcon from '@material-ui/icons/Build';
+import LockIcon from '@material-ui/icons/Lock';
+import CloudIcon from '@material-ui/icons/Cloud';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import PersonIcon from '@material-ui/icons/Person';
 const accountMenuItemsAuthenticated = (
   <>
   <%_ if (!skipUserManagement) { _%>
-    <MenuItem icon="wrench" to="/account/settings"><Translate contentKey="global.menu.account.settings">Settings</Translate></MenuItem>
-    <MenuItem icon="lock" to="/account/password"><Translate contentKey="global.menu.account.password">Password</Translate></MenuItem>
+    <MenuItem icon={<BuildIcon/>} to="/account/settings"><Translate contentKey="global.menu.account.settings">Settings</Translate></MenuItem>
+    <MenuItem icon={<LockIcon/>} to="/account/password"><Translate contentKey="global.menu.account.password">Password</Translate></MenuItem>
     <%_ if (authenticationType === 'session') { _%>
-    <MenuItem icon="cloud" to="/account/sessions"><Translate contentKey="global.menu.account.sessions">Sessions</Translate></MenuItem>
+    <MenuItem icon={<CloudIcon/> to="/account/sessions"><Translate contentKey="global.menu.account.sessions">Sessions</Translate></MenuItem>
     <%_ } _%>
   <%_ } _%>
-    <MenuItem icon="sign-out-alt" to="/logout"><Translate contentKey="global.menu.account.logout">Sign out</Translate></MenuItem>
+    <MenuItem icon={<ExitToAppIcon/>} to="/logout"><Translate contentKey="global.menu.account.logout">Sign out</Translate></MenuItem>
   </>
   );
 
 const accountMenuItems = (
   <>
   <%_ if (authenticationType !== 'oauth2') { _%>
-    <MenuItem id="login-item" icon="sign-in-alt" to="/login"><Translate contentKey="global.menu.account.login">Sign in</Translate></MenuItem>
+    <MenuItem id="login-item" icon={<ArrowForwardIcon/>} to="/login"><Translate contentKey="global.menu.account.login">Sign in</Translate></MenuItem>
   <%_ } else { _%>
     <DropdownItem id="login-item" tag="a" href={getLoginUrl()}><FontAwesomeIcon icon="sign-in-alt" /> <Translate contentKey="global.menu.account.login">Sign in</Translate></DropdownItem>
   <%_ } _%>
   <%_ if (!skipUserManagement) { _%>
-    <MenuItem icon="sign-in-alt" to="/account/register"><Translate contentKey="global.menu.account.register">Register</Translate></MenuItem>
+    <MenuItem icon={<ArrowForwardIcon/>} to="/account/register"><Translate contentKey="global.menu.account.register">Register</Translate></MenuItem>
   <%_ } _%>
   </>
 );
 
 export const AccountMenu = ({ isAuthenticated = false }) => (
-  <NavDropdown icon="user" name={translate('global.menu.account.main')} id="account-menu">
+  <NavDropdown icon={<PersonIcon/>} name={translate('global.menu.account.main')} id="account-menu">
     {isAuthenticated ? accountMenuItemsAuthenticated : accountMenuItems}
   </NavDropdown>
 );

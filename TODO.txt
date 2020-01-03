@@ -1,0 +1,11 @@
+TODO: Mui-ify the following places:
+- client/.../modules/account
+- client/needle-api/needle-client-react.js
+- entity-client/
+
+TODO: Tests pass
+TODO: Actually run this blueprint
+TODO: Make it pretty
+TODO: Add a few material themes
+TODO: Get the info, danger, warning colors back in
+TODO: Get it up and remote

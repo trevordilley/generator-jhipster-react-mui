@@ -16,34 +16,36 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -%>
-
 <%#
 TODO: MUI
 -%>
 import React from 'react';
-import { MenuItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { NavLink as Link } from 'react-router-dom';
+import {Menu} from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export interface IMenuItem {
-<%#
-TODO: Specific type for MUI Icon
--%>
+export const NavDropdown = props => {
+  const [anchorEl, setAnchorEl] = useState(null)
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
 
-  icon: JSX.Element;
-  to: string;
-  id?: string
-}
-
-export default class MenuItem extends React.Component<IMenuItem> {
-
-  render() {
-    const { to, icon, id, children } = this.props;
-
-    return (
-      <MenuItem anchorEl={Link} to={to} id={id}>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText>{children}</ListItemText>
-      </MenuItem>
-    );
-  }
-}
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div id={props.id}>
+      <div className="d-flex align-items-center" onClick={handleClick}>
+        {props.icon}
+        <span>{props.name}</span>
+      </div>
+      <MuiMenu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        keepMounted
+        onClose={handleClose}
+      >
+        {props.children}
+      </MuiMenu>
+    </div>
+  )
+};

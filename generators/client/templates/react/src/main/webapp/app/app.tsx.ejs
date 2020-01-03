@@ -53,10 +53,6 @@ export const App = (props: IAppProps) => {
   return (
     <Router basename={baseHref}>
       <div className="app-container" style={{ paddingTop }}>
-        <%#
-        TODO use MUI snackbars for toasts.
-        -%>
-        <Snackbar />
         <ErrorBoundary>
           <Header
             isAuthenticated={props.isAuthenticated}

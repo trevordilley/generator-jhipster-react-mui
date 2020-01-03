@@ -16,22 +16,34 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -%>
+
 <%#
 TODO: MUI
 -%>
 import React from 'react';
-import {Menu } from '@material-ui/core';
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { MenuItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { NavLink as Link } from 'react-router-dom';
 
-export const NavDropdown = props => (
-<Menu id={props.id}>
-  <DropdownToggle nav caret className="d-flex align-items-center">
-    <FontAwesomeIcon icon={props.icon} />
-    <span>{props.name}</span>
-  </DropdownToggle>
-  <DropdownMenu right style={props.style}>
-    {props.children}
-  </DropdownMenu>
-</Menu>
-);
+export interface IMenuItem {
+<%#
+TODO: Specific type for MUI Icon
+-%>
+
+  icon: JSX.Element;
+  to: string;
+  id?: string
+}
+
+export default class MenuItem extends React.Component<IMenuItem> {
+
+  render() {
+    const { to, icon, id, children } = this.props;
+
+    return (
+      <MenuItem component={Link} to={to} id={id}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText>{children}</ListItemText>
+      </MenuItem>
+    );
+  }
+}
