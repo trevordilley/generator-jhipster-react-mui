@@ -1,3 +1,7 @@
+
+# WORK IN PROGRESS!! 
+I haven't even pushed this up to `npm` yet. 
+
 # generator-jhipster-react-mui
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > JHipster blueprint, React app leveraging the Material-UI component library.
