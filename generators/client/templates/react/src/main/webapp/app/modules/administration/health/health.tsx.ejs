@@ -23,12 +23,12 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Translate } from 'react-jhipster';
 import { Typography,  Button, Grid,  Chip, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, } from '@material-ui/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { systemHealth } from '../administration.reducer';
 import HealthModal from './health-modal';
-
+import SyncIcon from '@material-ui/icons/Sync';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 export interface IHealthPageProps extends StateProps, DispatchProps {}
 
 export const HealthPage = (props: IHealthPageProps) => {
@@ -62,7 +62,7 @@ export const HealthPage = (props: IHealthPageProps) => {
       <Typography variant="h2" id="health-page-heading">Health Checks</Typography>
       <p>
         <Button onClick={getSystemHealth} color={"primary"} disabled={isFetching}>
-          <FontAwesomeIcon icon="sync" />
+          <SyncIcon />
           &nbsp;
           <Translate component="span" contentKey="health.refresh.button">
             Refresh
@@ -91,7 +91,7 @@ export const HealthPage = (props: IHealthPageProps) => {
                 <TableCell>
                   {data[configPropKey].details ? (
                   <a onClick={getSystemHealthInfo(configPropKey, data[configPropKey])}>
-                    <FontAwesomeIcon icon="eye" />
+                    <VisibilityIcon />
                   </a>
                   ) : null}
                 </TableCell>

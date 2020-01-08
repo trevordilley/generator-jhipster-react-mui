@@ -20,20 +20,21 @@
 TODO: MUI
 -%>
 import React from 'react';
-import {Menu, MenuItem} from "@material-ui/core"
+import { MenuItem} from "@material-ui/core"
+import { NavDropdown } from './menu-components';
 import { locales, languages } from 'app/config/translation';
-
+import FlagIcon from '@material-ui/icons/Flag';
 export const LocaleMenu = ({ currentLocale, onClick }) =>
   Object.keys(languages).length > 1 && (
     <Menu>
       {locales.map(locale => (
-      <DropdownItem key={locale} value={locale} onClick={onClick}>
+      <MenuItem key={locale} value={locale} onClick={onClick}>
         {languages[locale].name}
-      </DropdownItem>
+      </MenuItem>
       ))}
 
     </Menu>
 
-    <NavDropdown icon="flag" name={(currentLocale ? languages[currentLocale].name : undefined)}>
+    <NavDropdown icon={<FlagIcon/>} name={(currentLocale ? languages[currentLocale].name : undefined)}>
     </NavDropdown>
   );

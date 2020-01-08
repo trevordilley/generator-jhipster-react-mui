@@ -24,10 +24,12 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { Dialog, DialogTitle,DialogContent, DialogActions, Button } from '@material-ui/core'
 import { Translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fontawesome/react-fontawesome';
 
 import { getUser, deleteUser } from './user-management.reducer';
 import { IRootState } from 'app/shared/reducers';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 export interface IUserManagementDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
 
@@ -57,11 +59,11 @@ export const UserManagementDeleteDialog = (props: IUserManagementDeleteDialogPro
       </DialogContent>
       <DialogActions>
         <Button color="secondary" onClick={handleClose}>
-          <FontAwesomeIcon icon="ban"/>&nbsp;
+          <NotInterestedIcon/>&nbsp;
           <Translate contentKey="entity.action.cancel">Cancel</Translate>
         </Button>
         <Button color="primary" onClick={confirmDelete}>
-          <FontAwesomeIcon icon="trash" />&nbsp;
+          <DeleteIcon />&nbsp;
           <Translate contentKey="entity.action.delete">Delete</Translate>
         </Button>
       </DialogActions>

@@ -24,7 +24,9 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Grid, Label, TextField, FormGroup, Typography } from '@material-ui/core'
 import { Translate, translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fontawesome/react-fontawesome';
+import SaveIcon from '@material-ui/icons/Save';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
 
 <%_ if (enableTranslation) { _%>
 import { locales, languages } from 'app/config/translation';
@@ -143,14 +145,14 @@ export const UserManagementUpdate = (props: IUserManagementUpdateProps) => {
             ))}
             </TextField>
           <Button component={Link} to="/admin/user-management"  color="secondary">
-            <FontAwesomeIcon icon="arrow-left" />&nbsp;
+            <ArrowBackIcon />&nbsp;
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
           <Button color="primary" type="submit" disabled={isInvalid || updating}>
-            <FontAwesomeIcon icon="save" />&nbsp;
+            <SaveIcon />&nbsp;
             <Translate contentKey="entity.action.save">Save</Translate>
           </Button>
         </form>

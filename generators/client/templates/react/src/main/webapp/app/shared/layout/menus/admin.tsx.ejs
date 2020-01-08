@@ -21,50 +21,57 @@ TODO: MUI
 -%>
 import React from 'react';
 import MenuItem from 'app/shared/layout/menus/menu-item';
-import {
-  DropdownItem
-} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink as Link } from 'react-router-dom';
 import { NavDropdown } from './menu-components';
 import { Translate, translate } from 'react-jhipster';
-
+import DeviceHubIcon from '@material-ui/icons/DeviceHub';
+import PersonIcon from '@material-ui/icons/Person';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import SpeedIcon from '@material-ui/icons/Speed';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import ListIcon from '@material-ui/icons/List';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
+import StorageIcon from '@material-ui/icons/Storage';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 const adminMenuItems = (
   <>
   <%_ if (applicationType === 'gateway' && serviceDiscoveryType) { _%>
-    <MenuItem icon="road" to="/admin/gateway"><Translate contentKey="global.menu.admin.gateway">Gateway</Translate></MenuItem>
+    <MenuItem icon={<DeviceHubIcon/>} to="/admin/gateway"><Translate contentKey="global.menu.admin.gateway">Gateway</Translate></MenuItem>
   <%_ } _%>
   <%_ if (!skipUserManagement) { _%>
-    <MenuItem icon="user" to="/admin/user-management"><Translate contentKey="global.menu.admin.userManagement">User management</Translate></MenuItem>
+    <MenuItem icon={<PersonIcon/>} to="/admin/user-management"><Translate contentKey="global.menu.admin.userManagement">User management</Translate></MenuItem>
   <%_ } _%>
   <%_ if (websocket === 'spring-websocket') { _%>
-    <MenuItem icon="eye" to="/admin/tracker"><Translate contentKey="global.menu.admin.tracker">User tracker</Translate></MenuItem>
+    <MenuItem icon={<VisibilityIcon/>} to="/admin/tracker"><Translate contentKey="global.menu.admin.tracker">User tracker</Translate></MenuItem>
   <%_ } _%>
-    <MenuItem icon="tachometer-alt" to="/admin/metrics"><Translate contentKey="global.menu.admin.metrics">Metrics</Translate></MenuItem>
-    <MenuItem icon="heart" to="/admin/health"><Translate contentKey="global.menu.admin.health">Health</Translate></MenuItem>
-    <MenuItem icon="list" to="/admin/configuration"><Translate contentKey="global.menu.admin.configuration">Configuration</Translate></MenuItem>
+    <MenuItem icon={<SpeedIcon/>} to="/admin/metrics"><Translate contentKey="global.menu.admin.metrics">Metrics</Translate></MenuItem>
+    <MenuItem icon={<FavoriteIcon/>} to="/admin/health"><Translate contentKey="global.menu.admin.health">Health</Translate></MenuItem>
+    <MenuItem icon={<ListIcon/> to="/admin/configuration"><Translate contentKey="global.menu.admin.configuration">Configuration</Translate></MenuItem>
     <%_ if (!['no', 'cassandra'].includes(databaseType)) { _%>
-    <MenuItem icon="bell" to="/admin/audits"><Translate contentKey="global.menu.admin.audits">Audits</Translate></MenuItem>
+    <MenuItem icon={<NotificationsIcon/>} to="/admin/audits"><Translate contentKey="global.menu.admin.audits">Audits</Translate></MenuItem>
     <%_ } _%>
   {/* jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here */}
-    <MenuItem icon="tasks" to="/admin/logs"><Translate contentKey="global.menu.admin.logs">Logs</Translate></MenuItem>
+    <MenuItem icon={<CheckCircleIcon/>} to="/admin/logs"><Translate contentKey="global.menu.admin.logs">Logs</Translate></MenuItem>
   </>
 );
 
 const swaggerItem = (
-  <MenuItem icon="book" to="/admin/docs"><Translate contentKey="global.menu.admin.apidocs">API</Translate></MenuItem>
+  <MenuItem icon={<ChromeReaderIcon/>} to="/admin/docs"><Translate contentKey="global.menu.admin.apidocs">API</Translate></MenuItem>
 );
 
 <% if (devDatabaseType === 'h2Disk' || devDatabaseType === 'h2Memory') { %>
 const databaseItem = (
-  <DropdownItem tag="a" href="./h2-console" target="_tab">
-    <FontAwesomeIcon icon="hdd" fixedWidth /> <Translate contentKey="global.menu.admin.database">Database</Translate>
-  </DropdownItem>
+  <MenuItem tag="a" href="./h2-console" target="_tab">
+    <FontAwesomeIcon icon={<StorageIcon/>} fixedWidth /> <Translate contentKey="global.menu.admin.database">Database</Translate>
+  </MenuItem>
 );
 <%_ } _%>
 
 export const AdminMenu = ({ showSwagger <% if (devDatabaseType === 'h2Disk' || devDatabaseType === 'h2Memory') { %>, showDatabase <%_ } _%>}) => (
-  <NavDropdown icon="user-plus" name={translate('global.menu.admin.main')} style={{ width: '140%' }} id="admin-menu">
+  <NavDropdown icon={</GroupAddIcon/>} name={translate('global.menu.admin.main')} style={{ width: '140%' }} id="admin-menu">
       {adminMenuItems}
       {showSwagger && swaggerItem}
       <% if (devDatabaseType === 'h2Disk' || devDatabaseType === 'h2Memory') { %>

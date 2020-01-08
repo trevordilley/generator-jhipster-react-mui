@@ -37,6 +37,10 @@ import Footer from 'app/shared/layout/footer/footer';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 import { AUTHORITIES } from 'app/config/constants';
+import MomentUtils from '@date-io/moment';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+
+
 import AppRoutes from 'app/routes';
 
 const baseHref = document.querySelector('base').getAttribute('href').replace(/\/$/, '');
@@ -51,31 +55,33 @@ export const App = (props: IAppProps) => {
 
   const paddingTop = '60px';
   return (
-    <Router basename={baseHref}>
-      <div className="app-container" style={{ paddingTop }}>
-        <ErrorBoundary>
-          <Header
-            isAuthenticated={props.isAuthenticated}
-            isAdmin={props.isAdmin}
-          <%_ if (enableTranslation) { _%>
-            currentLocale={props.currentLocale}
-            onLocaleChange={props.setLocale}
-          <%_ } _%>
-            ribbonEnv={props.ribbonEnv}
-            isInProduction={props.isInProduction}
-            isSwaggerEnabled={props.isSwaggerEnabled}
-          />
-        </ErrorBoundary>
-        <div className="container-fluid view-container" id="app-view-container">
-          <Paper>
-            <ErrorBoundary>
-              <AppRoutes/>
-            </ErrorBoundary>
-          </Paper>
-          <Footer/>
+    <MuiPickersUtilsProvider utils={MomentUtils}>
+      <Router basename={baseHref}>
+        <div className="app-container" style={{ paddingTop }}>
+          <ErrorBoundary>
+            <Header
+              isAuthenticated={props.isAuthenticated}
+              isAdmin={props.isAdmin}
+            <%_ if (enableTranslation) { _%>
+              currentLocale={props.currentLocale}
+              onLocaleChange={props.setLocale}
+            <%_ } _%>
+              ribbonEnv={props.ribbonEnv}
+              isInProduction={props.isInProduction}
+              isSwaggerEnabled={props.isSwaggerEnabled}
+            />
+          </ErrorBoundary>
+          <div className="container-fluid view-container" id="app-view-container">
+            <Paper>
+              <ErrorBoundary>
+                <AppRoutes/>
+              </ErrorBoundary>
+            </Paper>
+            <Footer/>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </MuiPickersUtilsProvider>
   );
 };
 

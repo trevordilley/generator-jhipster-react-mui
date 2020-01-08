@@ -38,14 +38,14 @@ export const NavDropdown = props => {
         {props.icon}
         <span>{props.name}</span>
       </div>
-      <MuiMenu
+      <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         keepMounted
         onClose={handleClose}
       >
         {props.children}
-      </MuiMenu>
+      </Menu>
     </div>
   )
 };

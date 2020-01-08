@@ -22,6 +22,7 @@ TODO: MUI
 import React from 'react';
 import { connect } from 'react-redux';
 import { Alert, Table, Button } from 'reactstrap';
+import { Paper, SnackBarContent, TableContainer, TableHead, TableBody, TableRow, TableCell, Button } from '@material-ui/core'
 import { Translate } from 'react-jhipster';
 import { getSession } from 'app/shared/reducers/authentication';
 import { IRootState } from 'app/shared/reducers';
@@ -55,49 +56,50 @@ export class SessionsPage extends React.Component<ISessionsProps> {
         </h2>
 
         {(updateSuccess) ? (
-        <Alert color="success">
+        <SnackBarContent variant="success">
           <Translate contentKey="sessions.messages.success">
             <strong>Session invalidated!</strong>
           </Translate>
-        </Alert>
+        </SnackBarContent>
         ) : null}
 
         {(updateFailure) ? (
-        <Alert color="danger">
+        <SnackBarContent variant="error">
           <Translate contentKey="sessions.messages.error">
             <span><strong>An error has occurred!</strong> The session could not be invalidated.</span>
           </Translate>
-        </Alert>
+        </SnackBarContent>
         ) : null}
 
         <Button color="primary" onClick={this.refreshList}>Refresh</Button>
 
         <div className="table-responsive">
-          <Table className="table-striped">
-            <thead>
-            <tr>
-              <th><Translate contentKey="sessions.table.ipaddress">IP Address</Translate></th>
-              <th><Translate contentKey="sessions.table.useragent">User agent</Translate></th>
-              <th><Translate contentKey="sessions.table.date">Date</Translate></th>
-              <th />
-            </tr>
-            </thead>
+          <TableContainer component={Paper}>
+            <Table className="table-striped">
+              <TableHead>
+               <TableRow>
+                 <TableCell><Translate contentKey="sessions.table.ipaddress">IP Address</Translate></TableCell>
+                 <TableCell><Translate contentKey="sessions.table.useragent">User agent</Translate></TableCell>
+                 <TableCell><Translate contentKey="sessions.table.date">Date</Translate></TableCell>
+               </TableRow>
+                <TableBody>
+                  {sessions.map((s, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{s.ipAddress}</TableCell>
+                    <TableCell>{s.userAgent}</TableCell
+                    <TableCell>{s.tokenDate}</TableCell>
+                    <TableCell>
+                      <Button color="primary" onClick={this.doSessionInvalidation(s.series)}>
+                        <Translate contentKey="sessions.table.button">Invalidate</Translate>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                  ))}
+                </TableBody>
+              </TableHead>
+            </Table>
 
-            <tbody>
-            {sessions.map((s, index) => (
-              <tr key={index}>
-                <td>{s.ipAddress}</td>
-                <td>{s.userAgent}</td>
-                <td>{s.tokenDate}</td>
-                <td>
-                  <Button color="primary" onClick={this.doSessionInvalidation(s.series)}>
-                    <Translate contentKey="sessions.table.button">Invalidate</Translate>
-                  </Button>
-                </td>
-              </tr>
-            ))}
-            </tbody>
-          </Table>
+          </TableContainer>
         </div>
       </div>
     );
