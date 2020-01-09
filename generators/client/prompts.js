@@ -10,8 +10,8 @@ function askForClient(meta) {
 
     const choices = [
         {
-            value: 'mui',
-            name: 'Material-UI'
+            value: 'react-mui',
+            name: 'React Material-UI'
         }
     ];
 
@@ -21,7 +21,7 @@ function askForClient(meta) {
         when: () => (applicationType !== 'microservice' && applicationType !== 'uaa'),
         message: () => 'Which *Framework* would you like to use for the client?',
         choices,
-        default: 'mui'
+        default: 'react-mui'
     };
 
     if (meta) return PROMPT; // eslint-disable-line consistent-return
