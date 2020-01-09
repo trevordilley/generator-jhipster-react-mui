@@ -1,65 +1,22 @@
-/**
- * Copyright 2013-2019 the original author or authors from the JHipster project.
- *
- * This file is part of the JHipster project, see https://www.jhipster.tech/
- * for more information.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 /* eslint-disable consistent-return */
-const chalk = require('chalk');
+const EntityClientGenerator = require('generator-jhipster/generators/entity-client');
 const writeFiles = require('./files').writeFiles;
-const utils = require('../utils');
-const BaseBlueprintGenerator = require('../generator-base-blueprint');
 
-let useBlueprints;
-
-module.exports = class extends BaseBlueprintGenerator {
+module.exports = class extends EntityClientGenerator {
     constructor(args, opts) {
-        super(args, opts);
-        utils.copyObjectProps(this, opts.context);
-        this.jhipsterContext = opts.jhipsterContext || opts.context;
-        this.configOptions = opts.configOptions || {};
-
-        useBlueprints =
-            !opts.fromBlueprint &&
-            this.instantiateBlueprints('entity-client', { context: opts.context, debug: opts.context.isDebugEnabled });
-    }
-
-    // Public API method used by the getter and also by Blueprints
-    _writing() {
-        return writeFiles();
+        super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
     }
 
     get writing() {
-        if (useBlueprints) return;
-        return this._writing();
-    }
-
-    // Public API method used by the getter and also by Blueprints
-    _end() {
         return {
-            end() {
-                if (!this.options['skip-install'] && !this.skipClient) {
-                    this.rebuildClient();
-                }
-                this.log(chalk.bold.green(`Entity ${this.entityNameCapitalized} generated successfully.`));
+            writeAdditionalFile() {
+                writeFiles.call(this);
             }
         };
     }
 
     get end() {
-        if (useBlueprints) return;
-        return this._end();
+        // Here we are not overriding this phase and hence its being handled by JHipster
+        return super._end();
     }
 };

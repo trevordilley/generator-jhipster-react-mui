@@ -17,11 +17,11 @@
  * limitations under the License.
  */
 /* eslint-disable consistent-return */
+const chalk = require('chalk');
 const writeFiles = require('./files').writeFiles;
 const utils = require('../utils');
 const BaseBlueprintGenerator = require('../generator-base-blueprint');
 
-/* constants used throughout */
 let useBlueprints;
 
 module.exports = class extends BaseBlueprintGenerator {
@@ -32,7 +32,8 @@ module.exports = class extends BaseBlueprintGenerator {
         this.configOptions = opts.configOptions || {};
 
         useBlueprints =
-            !opts.fromBlueprint && this.instantiateBlueprints('entity-i18n', { context: opts.context, debug: opts.context.isDebugEnabled });
+            !opts.fromBlueprint &&
+            this.instantiateBlueprints('entity-client', { context: opts.context, debug: opts.context.isDebugEnabled });
     }
 
     // Public API method used by the getter and also by Blueprints
@@ -43,5 +44,22 @@ module.exports = class extends BaseBlueprintGenerator {
     get writing() {
         if (useBlueprints) return;
         return this._writing();
+    }
+
+    // Public API method used by the getter and also by Blueprints
+    _end() {
+        return {
+            end() {
+                if (!this.options['skip-install'] && !this.skipClient) {
+                    this.rebuildClient();
+                }
+                this.log(chalk.bold.green(`Entity ${this.entityNameCapitalized} generated successfully.`));
+            }
+        };
+    }
+
+    get end() {
+        if (useBlueprints) return;
+        return this._end();
     }
 };
